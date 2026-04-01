@@ -251,14 +251,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           }}
             className="sidebar-logo-zone"
           >
-            <div style={{
-              width: 28, height: 28, borderRadius: 7,
-              background: "#18181B",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              flexShrink: 0,
-            }}>
-              <Zap style={{ width: 13, height: 13, color: "#fff" }} />
-            </div>
+            <img 
+              src="/LOGO.png" 
+              alt="Prompt Vault Logo" 
+              style={{ height: 40, width: "auto", objectFit: "contain", borderRadius: 6, flexShrink: 0 }} 
+            />
             <div>
               <p style={{
                 fontSize: 16, fontWeight: 600,

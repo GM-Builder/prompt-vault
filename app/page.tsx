@@ -76,15 +76,11 @@ export default function LandingPage() {
           justifyContent: "space-between",
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{
-              width: 34, height: 34,
-              borderRadius: 10,
-              background: "linear-gradient(135deg, #22C55E, #16A34A)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 4px 12px rgba(34,197,94,0.30)",
-            }}>
-              <Sparkles style={{ width: 16, height: 16, color: "#fff" }} />
-            </div>
+            <img 
+              src="/LOGO.png" 
+              alt="Prompt Vault Logo" 
+              style={{ height: 40, width: "auto", objectFit: "contain", borderRadius: 8 }} 
+            />
             <span style={{ fontWeight: 600, fontSize: 15, color: "#111", letterSpacing: "-0.02em" }}>
               Prompt Vault
             </span>
