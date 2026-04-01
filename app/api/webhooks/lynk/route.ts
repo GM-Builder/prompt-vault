@@ -21,7 +21,9 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Invalid payload structure' }, { status: 400 });
     }
 
-    const { refId, message_id, message_data } = data;
+    const { message_id, message_data } = data;
+    // PENTING: refId berada di dalam message_data, bukan di data!
+    const { refId } = message_data;
     const amount = message_data.totals.grandTotal.toString();
     const customerEmail = message_data.customer.email.toLowerCase().trim();
     const merchantKey = process.env.LYNK_MERCHANT_KEY || "";
