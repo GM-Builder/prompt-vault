@@ -134,7 +134,7 @@ export default function AdminPage() {
             <h1 style={{ fontSize: 22, fontWeight: 800, color: "#F4F4F5", marginBottom: 8 }}>
               Admin Panel
             </h1>
-            <p style={{ color: "#71717A", fontSize: 14 }}>Prompt Vault — Internal Access Only</p>
+            <p style={{ color: "#71717A", fontSize: 14 }}>Veloprome — Internal Access Only</p>
           </div>
 
           <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: 16 }}>

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { Sparkles, Copy, ArrowRight, Check, Zap, Shield, Layers } from "lucide-react";
 import { PromptCard } from "@/components/PromptCard";
+import { SignInButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 export const metadata = {
-  title: "THE PROMPT VAULT | 1,000+ Premium AI Prompts",
+  title: "VELOPROME | 1,000+ Premium AI Prompts",
   description: "Unlock 1,000+ premium AI prompts for ChatGPT, Claude, and Gemini. One-time payment of IDR 8,000.",
 };
 
@@ -53,7 +55,10 @@ const STATS = [
   { value: "IDR 8K", label: "One-time Price" },
 ];
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const authObj = await auth();
+  const userId = authObj.userId;
+  
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "'Geist', system-ui, sans-serif" }}>
 
@@ -78,11 +83,11 @@ export default function LandingPage() {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <img 
               src="/LOGO.png" 
-              alt="Prompt Vault Logo" 
+              alt="Veloprome Logo" 
               style={{ height: 40, width: "auto", objectFit: "contain", borderRadius: 8 }} 
             />
             <span style={{ fontWeight: 600, fontSize: 15, color: "#111", letterSpacing: "-0.02em" }}>
-              Prompt Vault
+              Veloprome
             </span>
           </div>
 
@@ -95,18 +100,35 @@ export default function LandingPage() {
                 Preview Dashboard
               </button>
             </Link>
-            <Link href="/dashboard" style={{ textDecoration: "none" }}>
-              <button style={{
-                display: "inline-flex", alignItems: "center", gap: 7,
-                background: "#111", color: "#fff",
-                fontSize: 13, fontWeight: 600,
-                padding: "10px 20px", borderRadius: 100, border: "none", cursor: "pointer",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
-                transition: "all 0.18s ease",
-              }}>
-                Get Access <ArrowRight style={{ width: 14, height: 14 }} />
-              </button>
-            </Link>
+            {userId ? (
+              <Link href="/dashboard" style={{ textDecoration: "none" }}>
+                <button style={{
+                  display: "inline-flex", alignItems: "center", gap: 7,
+                  background: "#111", color: "#fff",
+                  fontSize: 13, fontWeight: 600,
+                  padding: "10px 20px", borderRadius: 100, border: "none", cursor: "pointer",
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+                  transition: "all 0.18s ease",
+                }}>
+                  Go to Dashboard <ArrowRight style={{ width: 14, height: 14 }} />
+                </button>
+              </Link>
+            ) : null}
+
+            {!userId ? (
+              <SignInButton mode="modal" forceRedirectUrl="/payment">
+                <button style={{
+                  display: "inline-flex", alignItems: "center", gap: 7,
+                  background: "#111", color: "#fff",
+                  fontSize: 13, fontWeight: 600,
+                  padding: "10px 20px", borderRadius: 100, border: "none", cursor: "pointer",
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+                  transition: "all 0.18s ease",
+                }}>
+                  Get Access <ArrowRight style={{ width: 14, height: 14 }} />
+                </button>
+              </SignInButton>
+            ) : null}
           </div>
         </div>
       </nav>
@@ -169,17 +191,32 @@ export default function LandingPage() {
         </p>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
-          <Link href="/dashboard" style={{ textDecoration: "none" }}>
-            <button style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              background: "#111", color: "#fff",
-              fontSize: 15, fontWeight: 600,
-              padding: "16px 32px", borderRadius: 100, border: "none", cursor: "pointer",
-              boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
-            }}>
-              Access the Vault <ArrowRight style={{ width: 16, height: 16 }} />
-            </button>
-          </Link>
+          {userId ? (
+            <Link href="/dashboard" style={{ textDecoration: "none" }}>
+              <button style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                background: "#111", color: "#fff",
+                fontSize: 15, fontWeight: 600,
+                padding: "16px 32px", borderRadius: 100, border: "none", cursor: "pointer",
+                boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
+              }}>
+                Go to Dashboard <ArrowRight style={{ width: 16, height: 16 }} />
+              </button>
+            </Link>
+          ) : null}
+          {!userId ? (
+            <SignInButton mode="modal" forceRedirectUrl="/payment">
+              <button style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                background: "#111", color: "#fff",
+                fontSize: 15, fontWeight: 600,
+                padding: "16px 32px", borderRadius: 100, border: "none", cursor: "pointer",
+                boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
+              }}>
+                Access the Vault <ArrowRight style={{ width: 16, height: 16 }} />
+              </button>
+            </SignInButton>
+          ) : null}
           <div style={{ fontSize: 14, color: "#A1A1AA" }}>
             One-time payment ·{" "}
             <span style={{ fontWeight: 600, fontSize: 16, color: "#111" }}>IDR 8.000</span>
@@ -339,17 +376,32 @@ export default function LandingPage() {
             </p>
 
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
-              <Link href="/dashboard" style={{ textDecoration: "none" }}>
-                <button style={{
-                  display: "inline-flex", alignItems: "center", gap: 8,
-                  background: "#fff", color: "#111",
-                  fontSize: 15, fontWeight: 600,
-                  padding: "16px 32px", borderRadius: 100, border: "none", cursor: "pointer",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
-                }}>
-                  Get Access — IDR 8.000 <ArrowRight style={{ width: 16, height: 16 }} />
-                </button>
-              </Link>
+              {userId ? (
+                <Link href="/dashboard" style={{ textDecoration: "none" }}>
+                  <button style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    background: "#fff", color: "#111",
+                    fontSize: 15, fontWeight: 600,
+                    padding: "16px 32px", borderRadius: 100, border: "none", cursor: "pointer",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+                  }}>
+                    Go to Dashboard <ArrowRight style={{ width: 16, height: 16 }} />
+                  </button>
+                </Link>
+              ) : null}
+              {!userId ? (
+                <SignInButton mode="modal" forceRedirectUrl="/payment">
+                  <button style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    background: "#fff", color: "#111",
+                    fontSize: 15, fontWeight: 600,
+                    padding: "16px 32px", borderRadius: 100, border: "none", cursor: "pointer",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+                  }}>
+                    Get Access — IDR 8.000 <ArrowRight style={{ width: 16, height: 16 }} />
+                  </button>
+                </SignInButton>
+              ) : null}
 
               <div style={{
                 display: "flex", alignItems: "center", gap: 20,
@@ -374,7 +426,7 @@ export default function LandingPage() {
         fontSize: 12, color: "#A1A1AA",
         borderTop: "1px solid #EBEBEB",
       }}>
-        © 2026 Prompt Vault · Built for ChatGPT, Claude &amp; Gemini
+        © 2026 Veloprome · Built for ChatGPT, Claude &amp; Gemini
       </footer>
 
       <style>{`

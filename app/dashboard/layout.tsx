@@ -253,7 +253,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           >
             <img 
               src="/LOGO.png" 
-              alt="Prompt Vault Logo" 
+              alt="Veloprome Logo" 
               style={{ height: 40, width: "auto", objectFit: "contain", borderRadius: 6, flexShrink: 0 }} 
             />
             <div>
@@ -263,7 +263,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 color: "#111", lineHeight: 1.2,
                 letterSpacing: "-0.03em",
               }}>
-                Prompt Vault
+                Veloprome
               </p>
               <p style={{
                 fontSize: 12, color: "#A1A1AA", marginTop: 2,

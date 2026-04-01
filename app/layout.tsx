@@ -15,7 +15,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Prompt Vault | 1,000+ AI Prompts",
+  title: "Veloprome | 1,000+ AI Prompts",
   description: "Unlock 1,000+ premium AI prompts for ChatGPT, Claude, and Gemini. IDR 8,000 one-time access.",
 };
 

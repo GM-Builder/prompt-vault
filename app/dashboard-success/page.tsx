@@ -81,7 +81,7 @@ export default function DashboardSuccessPage() {
         <form onSubmit={handleRedeem}>
           <input 
             type="text" 
-            placeholder="Enter Password (e.g., PROMPTVAULT8K)"
+            placeholder="Enter Password (e.g., VELOPROME8K)"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={status === "loading" || status === "success"}

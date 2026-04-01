@@ -16,7 +16,7 @@ export async function GET(req: Request) {
   }
 
   const row = await prisma.config.findUnique({ where: { key: CONFIG_KEY } });
-  const password = row?.value ?? process.env.ACTIVATION_PASSWORD ?? "PROMPTVAULT8K";
+  const password = row?.value ?? process.env.ACTIVATION_PASSWORD ?? "VELOPROME8K";
 
   return NextResponse.json({ password });
 }
