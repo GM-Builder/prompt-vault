@@ -4,7 +4,8 @@ import { useState, useMemo } from "react";
 import { 
   Copy, Check, Sparkles, Music, Megaphone, 
   User, Headphones, Calendar, BarChart2, 
-  Play, Mail, BookOpen, Rocket, Image 
+  Play, Mail, BookOpen, Rocket, Image,
+  Lock as LucideLock
 } from "lucide-react";
 
 interface PromptCardProps {
@@ -12,6 +13,7 @@ interface PromptCardProps {
   title: string;
   category: string;
   content: string;
+  isLocked?: boolean;
   onSelect?: () => void;
 }
 
@@ -33,7 +35,7 @@ const getCategoryConfig = (category: string) => {
   return { color: "#10B981", icon: Sparkles }; // Default Emerald
 };
 
-export function PromptCard({ id, title, category, content, onSelect }: PromptCardProps) {
+export function PromptCard({ id, title, category, content, isLocked = false, onSelect }: PromptCardProps) {
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
 
@@ -41,6 +43,10 @@ export function PromptCard({ id, title, category, content, onSelect }: PromptCar
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (isLocked) {
+      if (onSelect) onSelect();
+      return;
+    }
     navigator.clipboard.writeText(content);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -155,9 +161,33 @@ export function PromptCard({ id, title, category, content, onSelect }: PromptCar
             color: "#64748B",
             flexGrow: 1,
             fontWeight: 500,
+            position: "relative",
+            filter: isLocked ? "blur(4px)" : "none",
+            userSelect: isLocked ? "none" : "auto",
+            transition: "all 0.3s ease"
           }}
         >
           {preview}
+          {isLocked && (
+            <div style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 10
+            }}>
+                <div style={{ 
+                  background: "rgba(255,255,255,0.8)", 
+                  padding: 8, 
+                  borderRadius: "50%",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                  border: "1px solid rgba(0,0,0,0.04)"
+                }}>
+                  <LucideLock style={{ width: 14, height: 14, color: "#94A3B8" }} />
+                </div>
+            </div>
+          )}
         </div>
 
         <div style={{ 
@@ -193,10 +223,12 @@ export function PromptCard({ id, title, category, content, onSelect }: PromptCar
           >
             {copied ? (
               <Check style={{ width: 14, height: 14 }} />
+            ) : isLocked ? (
+              <LucideLock style={{ width: 14, height: 14 }} />
             ) : (
               <Copy style={{ width: 14, height: 14 }} />
             )}
-            {copied ? "Copied" : "Copy"}
+            {copied ? "Copied" : isLocked ? "Unlock" : "Copy"}
           </button>
         </div>
       </div>

@@ -221,7 +221,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <div style={{
         display: "flex",
         flexDirection: "column",
-        minHeight: "100vh",
+        height: "100vh", // Lock to viewport height
+        overflow: "hidden", // Disable global scroll
         background: "#fff",
         fontFamily: "'Geist', system-ui, sans-serif",
       }}>
@@ -385,10 +386,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               flexShrink: 0,
               background: "#fff",
               borderRight: "1px solid #EBEBEB",
-              height: "calc(100vh - 108px)",
-              position: "sticky",
-              top: 108,
-              overflowY: "auto",
+              height: "100%", // Take full height of parent
+              overflow: "hidden", // Disable scrolling for entire sidebar
             }}
           >
             <SidebarContent

@@ -5,6 +5,8 @@ import { useDashboard } from "./context";
 import { PromptCard } from "@/components/PromptCard";
 import { CampaignBanner } from "@/components/CampaignBanner";
 import { PromptSidePanel } from "@/components/PromptSidePanel";
+import { PricingModal } from "@/components/PricingModal";
+import { useUser } from "@clerk/nextjs";
 import { ChevronLeft, ChevronRight, Loader2, SearchX, Layers } from "lucide-react";
 
 interface Prompt {
@@ -31,7 +33,11 @@ export default function DashboardPage() {
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [showPricingModal, setShowPricingModal] = useState(false);
+  const { user, isLoaded } = useUser();
   const gridRef = useRef<HTMLDivElement>(null);
+
+  const isPaid = user?.publicMetadata?.isPaid === true;
 
   const fetchPrompts = useCallback(async (pg: number) => {
     setLoading(true);
@@ -210,12 +216,27 @@ export default function DashboardPage() {
               className="animate-fadein-up"
               style={{ animationDelay: `${(i % 12) * 40}ms` }}
             >
-              <PromptCard {...prompt} onSelect={() => setSelectedPrompt(prompt)} />
+              <PromptCard 
+                {...prompt} 
+                isLocked={!isPaid}
+                onSelect={() => {
+                  if (!isPaid) {
+                    setShowPricingModal(true);
+                  } else {
+                    setSelectedPrompt(prompt);
+                  }
+                }} 
+              />
             </div>
           ))}
       </div>
 
       <PromptSidePanel prompt={selectedPrompt} onClose={() => setSelectedPrompt(null)} />
+      
+      <PricingModal 
+        isOpen={showPricingModal} 
+        onClose={() => setShowPricingModal(false)} 
+      />
 
       {/* ── Pagination ── */}
       {!loading && data && data.totalPages > 1 && (

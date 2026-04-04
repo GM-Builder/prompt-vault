@@ -28,10 +28,8 @@ export default clerkMiddleware(async (authFn, req) => {
     console.log("Parsed metadata:", metadata);
     const isPaid = (metadata as any)?.isPaid === true;
 
-    // 3. Jika belum bayar, arahkan ke halaman payment
-    if (!isPaid) {
-      return NextResponse.redirect(new URL("/payment", req.url));
-    }
+    // 3. User can always access /dashboard now (V3 Teaser Mode)
+    // We handle the locked state in the frontend.
   }
 
   return NextResponse.next();
