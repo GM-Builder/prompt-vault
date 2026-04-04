@@ -13,17 +13,17 @@ import { DashboardContext } from "./context";
 import { UserButton, useUser } from "@clerk/nextjs";
 
 const CATEGORIES = [
+  { key: "Image Generation", Icon: Image, short: "Image Gen" },
   { key: "TikTok Affiliate Viral (Hooks & Scripts)", Icon: Music, short: "TikTok Affiliate" },
   { key: "High-Converting Copywriting (FB/IG Ads)", Icon: Megaphone, short: "Copywriting" },
   { key: "Personal Branding Expert (LinkedIn/IG)", Icon: User, short: "Personal Branding" },
   { key: "Customer Service & Crisis Management", Icon: Headphones, short: "Customer Service" },
-  { key: "Daily Content Ideas (30-Day Calendar)", Icon: Calendar, short: "Content Ideas" },
+  { key: "Daily Content Ideas (30-Day Calendar Niche-based)", Icon: Calendar, short: "Content Ideas" },
   { key: "Market Research & Competitor Analysis", Icon: BarChart2, short: "Market Research" },
   { key: "YouTube / Long Video Scripting", Icon: Play, short: "YouTube Scripts" },
   { key: "Email Marketing & FOMO Newsletters", Icon: Mail, short: "Email Marketing" },
   { key: "Storytelling & Emotional Selling", Icon: BookOpen, short: "Storytelling" },
   { key: "Product Launch Strategy (H-7 to Launch Day)", Icon: Rocket, short: "Product Launch" },
-  { key: "Image Generation", Icon: Image, short: "Image Gen" },
 ];
 
 function NavItem({

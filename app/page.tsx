@@ -15,6 +15,7 @@ export const metadata = {
 };
 
 const CATEGORIES_WITH_ICONS = [
+  { name: "Image Generation", icon: <ImageIcon className="w-4 h-4" /> },
   { name: "TikTok Affiliate", icon: <Music className="w-4 h-4" /> },
   { name: "Copywriting", icon: <Megaphone className="w-4 h-4" /> },
   { name: "Personal Branding", icon: <User className="w-4 h-4" /> },
@@ -25,7 +26,6 @@ const CATEGORIES_WITH_ICONS = [
   { name: "Email Marketing", icon: <Mail className="w-4 h-4" /> },
   { name: "Storytelling", icon: <BookOpen className="w-4 h-4" /> },
   { name: "Product Launch", icon: <Rocket className="w-4 h-4" /> },
-  { name: "Image Generation", icon: <ImageIcon className="w-4 h-4" /> },
 ];
 
 const STATS = [
