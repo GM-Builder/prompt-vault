@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { 
-  Copy, Check, Sparkles, Music, Megaphone, 
-  User, Headphones, Calendar, BarChart2, 
+import {
+  Copy, Check, Sparkles, Music, Megaphone,
+  User, Headphones, Calendar, BarChart2,
   Play, Mail, BookOpen, Rocket, Image,
   Lock as LucideLock
 } from "lucide-react";
@@ -19,7 +19,7 @@ interface PromptCardProps {
 
 const getCategoryConfig = (category: string) => {
   const normalized = category.toLowerCase();
-  
+
   if (normalized.includes("tiktok")) return { color: "#8b5cf6", icon: Music }; // Violet
   if (normalized.includes("copywriting")) return { color: "#ef4444", icon: Megaphone }; // Red
   if (normalized.includes("personal branding")) return { color: "#3b82f6", icon: User }; // Blue
@@ -31,7 +31,7 @@ const getCategoryConfig = (category: string) => {
   if (normalized.includes("storytelling")) return { color: "#8b5cf6", icon: BookOpen }; // Purple
   if (normalized.includes("product launch")) return { color: "#f43f5e", icon: Rocket }; // Rose
   if (normalized.includes("image generation")) return { color: "#14b8a6", icon: Image }; // Teal
-  
+
   return { color: "#10B981", icon: Sparkles }; // Default Emerald
 };
 
@@ -53,11 +53,12 @@ export function PromptCard({ id, title, category, content, isLocked = false, onS
   };
 
   const preview = content.length > 90 ? content.slice(0, 90) + "…" : content;
-  
+
   const shortCategory = category.length > 20 ? category.split('(')[0].trim() : category;
 
   return (
     <div
+      className="prompt-card"
       onClick={onSelect}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -82,7 +83,7 @@ export function PromptCard({ id, title, category, content, isLocked = false, onS
       }}
     >
       {/* Visual Thumbnail */}
-      <div style={{
+      <div className="prompt-card-thumbnail" style={{
         height: 180,
         borderRadius: 22,
         background: `linear-gradient(135deg, ${color} 0%, ${color}CC 100%)`,
@@ -102,19 +103,19 @@ export function PromptCard({ id, title, category, content, isLocked = false, onS
 
         {/* Dynamic Category Icon */}
         <div style={{
-            padding: 20,
-            borderRadius: "50%",
-            background: "rgba(255,255,255,0.12)",
-            backdropFilter: "blur(8px)",
-            border: "1px solid rgba(255,255,255,0.2)",
-            zIndex: 1,
-            transform: hovered ? "scale(1.1) rotate(5deg)" : "scale(1) rotate(0deg)",
-            transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)"
+          padding: 20,
+          borderRadius: "50%",
+          background: "rgba(255,255,255,0.12)",
+          backdropFilter: "blur(8px)",
+          border: "1px solid rgba(255,255,255,0.2)",
+          zIndex: 1,
+          transform: hovered ? "scale(1.1) rotate(5deg)" : "scale(1) rotate(0deg)",
+          transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)"
         }}>
-            <CategoryIcon style={{ 
-            width: 32, height: 32, color: "#fff", 
-            filter: "drop-shadow(0 0 12px rgba(255,255,255,0.3))" 
-            }} />
+          <CategoryIcon style={{
+            width: 32, height: 32, color: "#fff",
+            filter: "drop-shadow(0 0 12px rgba(255,255,255,0.3))"
+          }} />
         </div>
 
         {/* Floating Category Badge */}
@@ -143,8 +144,10 @@ export function PromptCard({ id, title, category, content, isLocked = false, onS
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 8, flexGrow: 1, padding: "4px 8px 10px" }}>
-        <h3 style={{
-          fontSize: 18,
+        <h3 
+          className="prompt-card-title"
+          style={{
+            fontSize: 18,
           fontWeight: 800,
           lineHeight: 1.3,
           color: "#1E293B",
@@ -155,6 +158,7 @@ export function PromptCard({ id, title, category, content, isLocked = false, onS
         </h3>
 
         <div
+          className="prompt-card-content"
           style={{
             fontSize: 14,
             lineHeight: 1.6,
@@ -177,23 +181,23 @@ export function PromptCard({ id, title, category, content, isLocked = false, onS
               justifyContent: "center",
               zIndex: 10
             }}>
-                <div style={{ 
-                  background: "rgba(255,255,255,0.8)", 
-                  padding: 8, 
-                  borderRadius: "50%",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-                  border: "1px solid rgba(0,0,0,0.04)"
-                }}>
-                  <LucideLock style={{ width: 14, height: 14, color: "#94A3B8" }} />
-                </div>
+              <div style={{
+                background: "rgba(255,255,255,0.8)",
+                padding: 8,
+                borderRadius: "50%",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                border: "1px solid rgba(0,0,0,0.04)"
+              }}>
+                <LucideLock style={{ width: 14, height: 14, color: "#94A3B8" }} />
+              </div>
             </div>
           )}
         </div>
 
-        <div style={{ 
-          marginTop: 16, 
-          display: "flex", 
-          alignItems: "center", 
+        <div style={{
+          marginTop: 16,
+          display: "flex",
+          alignItems: "center",
           justifyContent: "space-between",
           borderTop: "1px solid rgba(0,0,0,0.04)",
           paddingTop: 16
@@ -201,7 +205,7 @@ export function PromptCard({ id, title, category, content, isLocked = false, onS
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#10B981" }} />
             <span style={{ fontSize: 11, fontWeight: 800, color: "#94A3B8", letterSpacing: "0.02em" }}>
-                PREMIUM VAULT
+              PREMIUM VAULT
             </span>
           </div>
 

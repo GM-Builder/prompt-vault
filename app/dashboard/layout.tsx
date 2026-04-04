@@ -187,17 +187,19 @@ function SidebarContent({
               {fallbackEmail}
             </p>
           </div>
-          <span style={{
-            fontSize: 10, fontWeight: 600,
-            fontFamily: "'Geist', system-ui, sans-serif",
-            color: "#16A34A", background: "#F0FDF4",
-            border: "1px solid #BBF7D0",
-            padding: "2px 7px", borderRadius: 5,
-            flexShrink: 0,
-            letterSpacing: "-0.01em",
-          }}>
-            Pro
-          </span>
+          {(user?.publicMetadata?.isPaid === true) && (
+            <span style={{
+              fontSize: 10, fontWeight: 600,
+              fontFamily: "'Geist', system-ui, sans-serif",
+              color: "#16A34A", background: "#F0FDF4",
+              border: "1px solid #BBF7D0",
+              padding: "2px 7px", borderRadius: 5,
+              flexShrink: 0,
+              letterSpacing: "-0.01em",
+            }}>
+              Pro
+            </span>
+          )}
         </div>
       </div>
     </div>
@@ -256,18 +258,18 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             className="sidebar-logo-zone"
           >
             <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 9 }}>
-                <img
+              <img
                 src="/LOGO.png"
                 alt="Veloprome"
                 style={{
-                    height: "38px",
-                    width: "auto",
-                    objectFit: "contain",
-                    display: "block",
-                    flexShrink: 0,
+                  height: "38px",
+                  width: "auto",
+                  objectFit: "contain",
+                  display: "block",
+                  flexShrink: 0,
                 }}
-                />
-                <span style={{
+              />
+              <span style={{
                 fontFamily: "'Geist', system-ui, sans-serif",
                 fontWeight: 900,
                 fontSize: "18px",
@@ -278,7 +280,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
-                }}>VELOPROME</span>
+              }}>VELOPROME</span>
             </Link>
           </div>
 
@@ -354,7 +356,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               <button style={{
                 background: "transparent", color: "#71717A",
                 fontSize: 12, fontWeight: 500,
-                padding: "8px 16px", borderRadius: 8, 
+                padding: "8px 16px", borderRadius: 8,
                 border: "1px solid #E4E4E7", cursor: "pointer",
                 transition: "all 0.2s"
               }} className="back-btn">
@@ -460,8 +462,28 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         @media (max-width: 768px) {
           .desktop-sidebar { display: none !important; }
           .sidebar-logo-zone { display: none !important; }
-          .dashboard-header { height: 72px !important; padding: 0 16px !important; }
-          .main-content { padding: 20px !important; }
+          .dashboard-header { 
+            height: 64px !important; // Reduced from 72 for sleeker mobile look
+            padding: 0 12px !important; 
+          }
+          .main-content { padding: 16px !important; }
+          .search-container { 
+            maxWidth: none !important; 
+            margin-left: 8px !important;
+          }
+          .search-container input {
+            font-size: 14px !important;
+            padding-top: 6px !important;
+            padding-bottom: 6px !important;
+          }
+          .desktop-stat { display: none !important; }
+          .back-btn { font-size: 11px !important; padding: 6px 12px !important; }
+          .prompt-card { padding: 10px !important; border-radius: 20px !important; }
+          .prompt-card-thumbnail { height: 120px !important; border-radius: 16px !important; }
+          .prompt-card-content { font-size: 12px !important; line-height: 1.4 !important; }
+        }
+        @media (max-width: 620px) {
+          .main-content { padding: 16px 24px !important; }
         }
         @media (min-width: 769px) {
           .mobile-menu-btn { display: none !important; }

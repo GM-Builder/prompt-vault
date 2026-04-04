@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { 
-  Sparkles, Copy, ArrowRight, Check, Zap, Shield, Layers, 
-  Music, Megaphone, User, Headphones, Calendar, BarChart2, 
+import {
+  Sparkles, Copy, ArrowRight, Check, Zap, Shield, Layers,
+  Music, Megaphone, User, Headphones, Calendar, BarChart2,
   Play, Mail, BookOpen, Rocket, Image as ImageIcon,
   Smartphone, Globe, Clock, Star
 } from "lucide-react";
@@ -157,14 +157,14 @@ export default async function LandingPage() {
                 </button>
               </Link>
             ) : (
-                <SignInButton mode="modal" forceRedirectUrl="/dashboard">
-                    <button style={{
-                        background: "#111", color: "#fff",
-                        fontSize: 13, fontWeight: 600,
-                        padding: "10px 24px", borderRadius: 100, border: "none", cursor: "pointer",
-                        boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
-                    }}>Get Started</button>
-                </SignInButton>
+              <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+                <button style={{
+                  background: "#111", color: "#fff",
+                  fontSize: 13, fontWeight: 600,
+                  padding: "10px 24px", borderRadius: 100, border: "none", cursor: "pointer",
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+                }}>Get Started</button>
+              </SignInButton>
             )}
           </div>
         </div>
@@ -187,7 +187,7 @@ export default async function LandingPage() {
           maxWidth: 1200, margin: "0 auto", padding: "100px 24px 120px",
           display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 60, alignItems: "center"
         }} className="hero-container">
-          
+
           <div style={{ zIndex: 1 }}>
             <div style={{
               display: "inline-flex", alignItems: "center", gap: 8,
@@ -203,7 +203,7 @@ export default async function LandingPage() {
               letterSpacing: "-0.04em", color: "#111", marginBottom: 28
             }}>
               The World&apos;s Most <br />
-              <span style={{ 
+              <span style={{
                 color: "#22C55E",
                 background: "linear-gradient(135deg, #22C55E 0%, #16A34A 100%)",
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"
@@ -212,22 +212,36 @@ export default async function LandingPage() {
             </h1>
 
             <p style={{ fontSize: 19, lineHeight: 1.6, color: "#52525B", maxWidth: 540, marginBottom: 48 }}>
-              Buka akses ke 1.000+ prompt yang telah diuji untuk ChatGPT, Claude, dan Gemini. 
+              Buka akses ke 1.000+ prompt yang telah diuji untuk ChatGPT, Claude, dan Gemini.
               Didesain untuk menghemat 20+ jam kerja Anda setiap minggu.
             </p>
 
             <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-              <SignInButton mode="modal" forceRedirectUrl="/dashboard">
-                <button style={{
-                  display: "inline-flex", alignItems: "center", gap: 10,
-                  background: "#111", color: "#fff",
-                  fontSize: 16, fontWeight: 600,
-                  padding: "18px 36px", borderRadius: 100, border: "none", cursor: "pointer",
-                  boxShadow: "0 20px 40px -12px rgba(0,0,0,0.3)",
-                }} className="hover-scale">
-                  {userId ? "Go to Dashboard" : "Get Instant Access"} <ArrowRight style={{ width: 18, height: 18 }} />
-                </button>
-              </SignInButton>
+              {userId ? (
+                <Link href="/dashboard" style={{ textDecoration: "none" }}>
+                  <button style={{
+                    display: "inline-flex", alignItems: "center", gap: 10,
+                    background: "#111", color: "#fff",
+                    fontSize: 16, fontWeight: 600,
+                    padding: "18px 36px", borderRadius: 100, border: "none", cursor: "pointer",
+                    boxShadow: "0 20px 40px -12px rgba(0,0,0,0.3)",
+                  }} className="hover-scale">
+                    Go to Dashboard <ArrowRight style={{ width: 18, height: 18 }} />
+                  </button>
+                </Link>
+              ) : (
+                <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+                  <button style={{
+                    display: "inline-flex", alignItems: "center", gap: 10,
+                    background: "#111", color: "#fff",
+                    fontSize: 16, fontWeight: 600,
+                    padding: "18px 36px", borderRadius: 100, border: "none", cursor: "pointer",
+                    boxShadow: "0 20px 40px -12px rgba(0,0,0,0.3)",
+                  }} className="hover-scale">
+                    Get Instant Access <ArrowRight style={{ width: 18, height: 18 }} />
+                  </button>
+                </SignInButton>
+              )}
             </div>
             <div style={{ marginTop: 24, fontSize: 14, color: "#A1A1AA" }}>
               One-time payment · <span style={{ fontWeight: 700, color: "#111" }}>Only IDR 8,000</span>
@@ -261,7 +275,7 @@ export default async function LandingPage() {
         <div className="marquee-wrapper">
           <div className="marquee-content">
             {[...CATEGORIES_WITH_ICONS, ...CATEGORIES_WITH_ICONS].map((cat, i) => (
-              <div key={i} style={{ 
+              <div key={i} style={{
                 display: "inline-flex", alignItems: "center", gap: 10,
                 padding: "0 40px", fontSize: 13, fontWeight: 600, color: "#111", opacity: 0.7
               }}>
@@ -337,14 +351,14 @@ export default async function LandingPage() {
               <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 15 }}>Satu kali pembayaran memberi Anda akses selamanya ke semua pembaruan prompt di masa depan secara gratis.</p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                {[Music, Mail, Rocket, Play].map((IconComp, i) => (
-                  <div key={i} style={{ 
-                    width: 50, height: 50, background: "rgba(255,255,255,0.1)", 
-                    borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center" 
-                  }}>
-                    <IconComp className="w-6 h-6 text-white opacity-40" />
-                  </div>
-                ))}
+              {[Music, Mail, Rocket, Play].map((IconComp, i) => (
+                <div key={i} style={{
+                  width: 50, height: 50, background: "rgba(255,255,255,0.1)",
+                  borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center"
+                }}>
+                  <IconComp className="w-6 h-6 text-white opacity-40" />
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -361,25 +375,25 @@ export default async function LandingPage() {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 32 }} className="responsive-grid">
             {[
-              { 
-                title: "Localized Context", 
-                desc: "Satu-satunya vault yang dimengerti orang Indonesia. Prompt disesuaikan dengan bahasa dan tren lokal.", 
-                icon: <Globe className="w-8 h-8 text-emerald-600" /> 
+              {
+                title: "Localized Context",
+                desc: "Satu-satunya vault yang dimengerti orang Indonesia. Prompt disesuaikan dengan bahasa dan tren lokal.",
+                icon: <Globe className="w-8 h-8 text-emerald-600" />
               },
-              { 
-                title: "Cost-Effective", 
-                desc: "Lebih murah dari kopi saset, tapi memberikan nilai ribuan kali lipat untuk karir dan bisnis Anda.", 
-                icon: <Zap className="w-8 h-8 text-emerald-600" /> 
+              {
+                title: "Cost-Effective",
+                desc: "Lebih murah dari kopi saset, tapi memberikan nilai ribuan kali lipat untuk karir dan bisnis Anda.",
+                icon: <Zap className="w-8 h-8 text-emerald-600" />
               },
-              { 
-                title: "True Efficiency", 
-                desc: "Potong waktu kerja dari jam-jaman jadi hitungan detik. Fokus pada strategi, biarkan AI yang menulis.", 
-                icon: <Clock className="w-8 h-8 text-emerald-600" /> 
+              {
+                title: "True Efficiency",
+                desc: "Potong waktu kerja dari jam-jaman jadi hitungan detik. Fokus pada strategi, biarkan AI yang menulis.",
+                icon: <Clock className="w-8 h-8 text-emerald-600" />
               }
             ].map((f, i) => (
-              <div key={i} style={{ 
-                background: "#fff", padding: 48, borderRadius: 32, 
-                border: "1px solid #F1F5F9", transition: "transform 0.3s ease" 
+              <div key={i} style={{
+                background: "#fff", padding: 48, borderRadius: 32,
+                border: "1px solid #F1F5F9", transition: "transform 0.3s ease"
               }} className="hover-lift">
                 <div style={{ width: 64, height: 64, background: "#ECFDF5", borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 24 }}>
                   {f.icon}
@@ -406,9 +420,9 @@ export default async function LandingPage() {
               { step: "02", title: "Unlock", desc: "Pilih paket sekali bayar yang sesuai. Akses langsung terbuka dalam hitungan detik." },
               { step: "03", title: "Copy-Paste", desc: "Copy prompt-nya, paste ke ChatGPT/Claude/Midjourney dan lihat hasilnya secara instan." }
             ].map((s, i) => (
-              <div key={i} style={{ 
-                display: "flex", alignItems: "center", gap: 40, padding: 32, 
-                background: "#fff", borderRadius: 32, border: "1px solid #F1F1F1" 
+              <div key={i} style={{
+                display: "flex", alignItems: "center", gap: 40, padding: 32,
+                background: "#fff", borderRadius: 32, border: "1px solid #F1F1F1"
               }} className="step-card">
                 <div style={{ fontSize: 42, fontWeight: 900, color: "#E2E8F0" }}>{s.step}</div>
                 <div>
@@ -458,7 +472,7 @@ export default async function LandingPage() {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 32 }} className="responsive-grid">
             {SAMPLE_PROMPTS.map((p, i) => (
-              <PromptCard 
+              <PromptCard
                 key={i}
                 id={i}
                 title={p.title}
@@ -468,13 +482,13 @@ export default async function LandingPage() {
               />
             ))}
           </div>
-          
+
           <div style={{ display: "flex", justifyContent: "center", gap: 40, marginTop: 72 }}>
-            {STATS.map((s,i) => (
-                <div key={i} style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: 24, fontWeight: 800, color: "#1F2937" }}>{s.value}</div>
-                    <div style={{ fontSize: 11, color: "#94A3B8", textTransform: "uppercase", fontWeight: 700, marginTop: 4 }}>{s.label}</div>
-                </div>
+            {STATS.map((s, i) => (
+              <div key={i} style={{ textAlign: "center" }}>
+                <div style={{ fontSize: 24, fontWeight: 800, color: "#1F2937" }}>{s.value}</div>
+                <div style={{ fontSize: 11, color: "#94A3B8", textTransform: "uppercase", fontWeight: 700, marginTop: 4 }}>{s.label}</div>
+              </div>
             ))}
           </div>
         </div>
@@ -495,17 +509,17 @@ export default async function LandingPage() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 20 }}>
               {TESTIMONIALS.map((t, i) => (
                 <div key={i} style={{ padding: 32, borderRadius: 24, background: "#fff", border: "1px solid #F1F5F9", boxShadow: "0 10px 30px rgba(0,0,0,0.02)" }}>
-                   <div style={{ display: "flex", gap: 2, marginBottom: 16 }}>
-                      {[1,2,3,4,5].map(s => <Star key={s} style={{ width: 14, height: 14, fill: "#F59E0B", color: "#F59E0B" }} />)}
-                   </div>
-                   <p style={{ fontSize: 16, color: "#334155", fontWeight: 600, lineHeight: 1.6, marginBottom: 20 }}>&quot;{t.text}&quot;</p>
-                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#F1F5F9", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 800 }}>{t.author[0]}</div>
-                      <div>
-                        <div style={{ fontSize: 14, fontWeight: 800 }}>{t.author}</div>
-                        <div style={{ fontSize: 12, color: "#94A3B8" }}>{t.role}</div>
-                      </div>
-                   </div>
+                  <div style={{ display: "flex", gap: 2, marginBottom: 16 }}>
+                    {[1, 2, 3, 4, 5].map(s => <Star key={s} style={{ width: 14, height: 14, fill: "#F59E0B", color: "#F59E0B" }} />)}
+                  </div>
+                  <p style={{ fontSize: 16, color: "#334155", fontWeight: 600, lineHeight: 1.6, marginBottom: 20 }}>&quot;{t.text}&quot;</p>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#F1F5F9", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 800 }}>{t.author[0]}</div>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 800 }}>{t.author}</div>
+                      <div style={{ fontSize: 12, color: "#94A3B8" }}>{t.role}</div>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -532,7 +546,7 @@ export default async function LandingPage() {
       <section style={{ padding: "120px 24px" }}>
         <div style={{
           maxWidth: 1000, margin: "0 auto", padding: "80px 48px",
-          background: "linear-gradient(135deg, #111 0%, #065F46 100%)", 
+          background: "linear-gradient(135deg, #111 0%, #065F46 100%)",
           borderRadius: 60, textAlign: "center",
           position: "relative", overflow: "hidden", color: "#fff",
           boxShadow: "0 40px 100px -20px rgba(16,185,129,0.3)"
@@ -545,29 +559,29 @@ export default async function LandingPage() {
           </p>
 
           <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap", zIndex: 1 }}>
-             {userId ? (
-               <Link href="/dashboard" style={{ textDecoration: "none" }}>
-                 <button style={{
-                   background: "#fff", color: "#111",
-                   fontSize: 18, fontWeight: 800,
-                   padding: "20px 56px", borderRadius: 100, border: "none", cursor: "pointer",
-                 }} className="hover-scale">
-                   Go to Dashboard <ArrowRight style={{ width: 18, height: 18 }} />
-                 </button>
-               </Link>
-             ) : (
-               <SignInButton mode="modal" forceRedirectUrl="/dashboard">
-                 <button style={{
-                   background: "#fff", color: "#111",
-                   fontSize: 18, fontWeight: 800,
-                   padding: "20px 56px", borderRadius: 100, border: "none", cursor: "pointer",
-                 }} className="hover-scale">
-                   Get Unlimited Access — IDR 8k
-                 </button>
-               </SignInButton>
-             )}
+            {userId ? (
+              <Link href="/dashboard" style={{ textDecoration: "none" }}>
+                <button style={{
+                  background: "#fff", color: "#111",
+                  fontSize: 18, fontWeight: 800,
+                  padding: "20px 56px", borderRadius: 100, border: "none", cursor: "pointer",
+                }} className="hover-scale">
+                  Go to Dashboard <ArrowRight style={{ width: 18, height: 18 }} />
+                </button>
+              </Link>
+            ) : (
+              <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+                <button style={{
+                  background: "#fff", color: "#111",
+                  fontSize: 18, fontWeight: 800,
+                  padding: "20px 56px", borderRadius: 100, border: "none", cursor: "pointer",
+                }} className="hover-scale">
+                  Get Unlimited Access — IDR 8k
+                </button>
+              </SignInButton>
+            )}
           </div>
-          
+
           <div style={{ marginTop: 40, display: "flex", justifyContent: "center", gap: 32, fontSize: 13, color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>
             <span style={{ display: "flex", alignItems: "center", gap: 8 }}><Check style={{ width: 16, height: 16 }} /> One-time Payment</span>
             <span style={{ display: "flex", alignItems: "center", gap: 8 }}><Check style={{ width: 16, height: 16 }} /> Lifetime Access</span>
@@ -603,12 +617,25 @@ export default async function LandingPage() {
         .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 
         @media (max-width: 968px) {
-          .hero-container { grid-template-columns: 1fr !important; text-align: center; }
+          .hero-container { grid-template-columns: 1fr !important; text-align: center; padding: 40px 20px 60px !important; }
+          .responsive-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 16px !important; }
+          .step-card { flex-direction: column !important; text-align: center; gap: 12px !important; padding: 20px !important; border-radius: 20px !important; }
+          .bento-grid { grid-template-columns: 1fr !important; grid-template-rows: auto !important; gap: 16px !important; }
+          .hero-container h1 { font-size: 34px !important; line-height: 1.1 !important; margin-bottom: 20px !important; }
+          .hero-container p { font-size: 15px !important; margin-bottom: 32px !important; }
+          section { padding: 40px 20px !important; }
+          h2 { font-size: 28px !important; line-height: 1.2 !important; }
+          .hero-visual { display: none !important; }
+          .nav-cta button { padding: 8px 16px !important; font-size: 12px !important; }
+          .prompt-card { padding: 10px !important; border-radius: 20px !important; }
+          .prompt-card-thumbnail { height: 120px !important; border-radius: 16px !important; }
+          .prompt-card-title { font-size: 15px !important; }
+          .prompt-card-content { font-size: 12px !important; line-height: 1.4 !important; }
+        }
+        @media (max-width: 620px) {
           .responsive-grid { grid-template-columns: 1fr !important; }
-          .step-card { flex-direction: column !important; text-align: center; gap: 16px !important; }
-          .bento-grid { grid-template-columns: 1fr !important; grid-template-rows: auto !important; }
-          h1 { fontSize: 48px !important; }
-          h2 { fontSize: 36px !important; }
+          section { padding: 40px 24px !important; }
+          .hero-container { padding: 40px 24px 60px !important; }
         }
       `}</style>
     </div>

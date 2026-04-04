@@ -322,10 +322,13 @@ export default function DashboardPage() {
         .pg-num:hover:not([style*="background: rgb(15, 23, 42)"]) { background: rgba(0,0,0,0.06); color: #0F172A; }
         
         @media (max-width: 1200px) {
-          .prompt-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 24px !important; }
+          .prompt-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 20px !important; }
         }
-        @media (max-width: 768px) {
-          .prompt-grid { grid-template-columns: 1fr !important; }
+        @media (max-width: 820px) {
+          .prompt-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 16px !important; }
+        }
+        @media (max-width: 620px) {
+          .prompt-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
         }
       `}</style>
     </div>
