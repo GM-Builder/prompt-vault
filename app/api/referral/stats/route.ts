@@ -42,17 +42,37 @@ export async function GET() {
       } as any
     });
 
-    // 5. Total Earnings
+    // 5. Total Earnings (SETTLED rewards)
     const rewards = await (prisma as any).referralReward.aggregate({
-      where: { referrerId: user.id },
+      where: { referrerId: user.id, status: "SETTLED" },
       _sum: { amount: true }
     });
+
+    // 6. Total withdrawn (PAID + PENDING, not REJECTED)
+    const withdrawn = await (prisma as any).withdrawalRequest.aggregate({
+      where: { userId: user.id, status: { not: "REJECTED" } },
+      _sum: { amount: true }
+    });
+
+    // 7. Withdrawal history (last 5)
+    const withdrawalHistory = await (prisma as any).withdrawalRequest.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+    });
+
+    const totalEarned = rewards._sum.amount || 0;
+    const totalWithdrawn = withdrawn._sum.amount || 0;
+    const available = Math.max(0, totalEarned - totalWithdrawn);
 
     return NextResponse.json({
       clicks: clicks || 0,
       pending: pending || 0,
       converted: converted || 0,
-      earnings: rewards._sum.amount || 0,
+      earnings: totalEarned,
+      available,
+      totalWithdrawn,
+      withdrawalHistory,
       referralCode: (user as any).referralCode
     });
   } catch (error) {

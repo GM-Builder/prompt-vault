@@ -18,6 +18,8 @@ model User {
   orders      Order[]
   favorites   Favorite[]
   submissions      ChallengeSubmission[]
+  payoutDetails    PayoutDetails?
+  withdrawals      WithdrawalRequest[]
   
   // Referral & Anti-Fraud
   referralCode     String?    @unique // Short 5-char code (e.g. ABC12)
@@ -112,4 +114,34 @@ model ReferralReward {
   updatedAt      DateTime @updatedAt
 
   @@index([referrerId])
+}
+
+model PayoutDetails {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bankName      String   // e.g., "BCA", "GoPay"
+  accountNumber String   // Rekening / Nomor HP
+  accountName   String   // Atas Nama
+  updatedAt     DateTime @updatedAt
+}
+
+model WithdrawalRequest {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount        Float
+  status        String   @default("PENDING") // PENDING, PAID, REJECTED
+  
+  // Snapshot of payout details at the time of request
+  bankName      String
+  accountNumber String
+  accountName   String
+  
+  adminNote     String?  // e.g. "Transfer via BCA sukses reff: 12345"
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
 }

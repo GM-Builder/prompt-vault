@@ -15,6 +15,8 @@ import {
 import { PromptSidePanel } from "@/components/PromptSidePanel";
 import { PricingModal } from "@/components/PricingModal";
 import { DashboardPreviewBanner } from "@/components/DashboardPreviewBanner";
+import { SettingsView } from "@/components/SettingsView";
+import { WithdrawalPanel } from "@/components/WithdrawalPanel";
 import { useUser } from "@clerk/nextjs";
 import { ChevronLeft, ChevronRight, Loader2, SearchX, Layers } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -56,7 +58,7 @@ function DashboardContent() {
   // Handle category deep-link
   useEffect(() => {
     const cat = searchParams.get("category");
-    if (cat && ["All", "Campaign", "Referral", "Leaderboard"].includes(cat)) {
+    if (cat && ["All", "Campaign", "Referral", "Leaderboard", "Settings"].includes(cat)) {
       setActiveCategory(cat);
     }
   }, [searchParams, setActiveCategory]);
@@ -90,8 +92,14 @@ function DashboardContent() {
     }
   }, [activeCategory, isPaid, setActiveCategory]);
 
+  useEffect(() => {
+    if (activeCategory === "Settings" && !isPaid) {
+      setActiveCategory("All");
+    }
+  }, [activeCategory, isPaid, setActiveCategory]);
+
   const fetchPrompts = useCallback(async (pg: number) => {
-    if (activeCategory === "Campaign" || activeCategory === "Leaderboard" || activeCategory === "Referral") return;
+    if (["Campaign", "Leaderboard", "Referral", "Settings"].includes(activeCategory)) return;
     
     setLoading(true);
     try {
@@ -165,8 +173,11 @@ function DashboardContent() {
             <p style={{ fontSize: 18, color: "#64748B", fontWeight: 500 }}>Kelola link referral Anda dan pantau komisi yang Anda dapatkan secara real-time.</p>
          </div>
          <ReferralWidget isPaid={isPaid} onUpgrade={() => setShowPricingModal(true)} />
+         <WithdrawalPanel />
       </div>
     );
+  } else if (activeCategory === "Settings") {
+    mainContent = <SettingsView />;
   } else if (activeCategory === "Leaderboard") {
     mainContent = (
       <div style={{ fontFamily: "'Geist', system-ui, sans-serif" }}>

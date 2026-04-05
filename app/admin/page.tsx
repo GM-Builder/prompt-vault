@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ShieldCheck, KeyRound, RefreshCw, LogIn, Eye, EyeOff, Check, Video, ExternalLink, Save, AlertCircle, BarChart3 } from "lucide-react";
+import { ShieldCheck, KeyRound, RefreshCw, LogIn, Eye, EyeOff, Check, Video, ExternalLink, Save, BarChart3, ArrowDownToLine, X, MessageSquare } from "lucide-react";
 
 export default function AdminPage() {
   const [adminSecret, setAdminSecret] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [showSecret, setShowSecret] = useState(false);
-  const [activeTab, setActiveTab] = useState<"password" | "campaign">("password");
+  const [activeTab, setActiveTab] = useState<"password" | "campaign" | "payouts">("password");
 
   // --- Password State ---
   const [currentPassword, setCurrentPassword] = useState("");
@@ -20,6 +20,12 @@ export default function AdminPage() {
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [isLoadingCampaign, setIsLoadingCampaign] = useState(false);
   const [savingId, setSavingId] = useState<string | null>(null);
+
+  // --- Payouts State ---
+  const [payouts, setPayouts] = useState<any[]>([]);
+  const [isLoadingPayouts, setIsLoadingPayouts] = useState(false);
+  const [processingId, setProcessingId] = useState<string | null>(null);
+  const [adminNoteMap, setAdminNoteMap] = useState<Record<string, string>>({});
 
   // --- Login as Admin ---
   const handleLogin = async (e: React.FormEvent) => {
@@ -102,6 +108,9 @@ export default function AdminPage() {
     if (isLoggedIn && activeTab === "campaign" && submissions.length === 0) {
         fetchSubmissions();
     }
+    if (isLoggedIn && activeTab === "payouts" && payouts.length === 0) {
+        fetchPayouts();
+    }
   }, [activeTab, isLoggedIn]);
 
   // --- Update Submission ---
@@ -130,6 +139,42 @@ export default function AdminPage() {
         alert("Gagal update data");
     }
     setSavingId(null);
+  };
+
+  // --- Fetch Payouts ---
+  const fetchPayouts = async () => {
+    setIsLoadingPayouts(true);
+    try {
+      const res = await fetch("/api/admin/withdrawals", {
+        headers: { "x-admin-secret": adminSecret },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setPayouts(data.withdrawals || []);
+        const noteMap: Record<string, string> = {};
+        data.withdrawals?.forEach((w: any) => { noteMap[w.id] = w.adminNote || ""; });
+        setAdminNoteMap(noteMap);
+      }
+    } catch (e) { console.error(e); }
+    setIsLoadingPayouts(false);
+  };
+
+  // --- Process Payout ---
+  const handleProcessPayout = async (id: string, status: "PAID" | "REJECTED") => {
+    setProcessingId(id);
+    try {
+      const res = await fetch("/api/admin/withdrawals", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", "x-admin-secret": adminSecret },
+        body: JSON.stringify({ id, status, adminNote: adminNoteMap[id] || null }),
+      });
+      if (res.ok) {
+        setPayouts(prev => prev.map(p => p.id === id ? { ...p, status, adminNote: adminNoteMap[id] } : p));
+      } else {
+        alert("Gagal memproses permintaan");
+      }
+    } catch (e) { alert("Terjadi kesalahan"); }
+    setProcessingId(null);
   };
 
   // --- UI Styles ---
@@ -237,6 +282,22 @@ export default function AdminPage() {
                 }}
             >
                 <Video size={18} /> Verifikasi Campaign
+            </button>
+            <button 
+                onClick={() => setActiveTab("payouts")}
+                style={{ 
+                    background: "none", border: "none", color: activeTab === "payouts" ? "#F4F4F5" : "#71717A", 
+                    fontSize: 16, fontWeight: 700, padding: "8px 16px", cursor: "pointer",
+                    borderBottom: activeTab === "payouts" ? "2px solid #F59E0B" : "2px solid transparent",
+                    display: "flex", alignItems: "center", gap: 8, transition: "all 0.2s", whiteSpace: "nowrap"
+                }}
+            >
+                <ArrowDownToLine size={18} /> Pencairan Komisi
+                {payouts.filter(p => p.status === "PENDING").length > 0 && (
+                  <span style={{ background: "#F59E0B", color: "#000", fontSize: 11, fontWeight: 800, padding: "2px 7px", borderRadius: 20 }}>
+                    {payouts.filter(p => p.status === "PENDING").length}
+                  </span>
+                )}
             </button>
         </div>
 
@@ -362,6 +423,113 @@ export default function AdminPage() {
                      </div>
                  )}
             </div>
+        )}
+
+        {/* Tab 3: Payout Requests */}
+        {activeTab === "payouts" && (
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+              <div>
+                <h1 style={{ fontSize: 20, fontWeight: 800, color: "#F4F4F5", marginBottom: 8 }}>Pencairan Komisi Referral</h1>
+                <p style={{ color: "#71717A", fontSize: 13, margin: 0 }}>Proses permintaan pencairan dari pengguna. Transfer manual lewat M-Banking lalu klik Tandai Lunas.</p>
+              </div>
+              <button onClick={fetchPayouts} disabled={isLoadingPayouts} style={{ background: "#1C1C24", border: "1px solid #2A2A35", color: "#A1A1AA", padding: "8px 16px", borderRadius: 100, display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, fontWeight: 600 }}>
+                {isLoadingPayouts ? <RefreshCw size={14} style={{ animation: "spin 1s linear infinite" }} /> : <RefreshCw size={14} />} Refresh
+              </button>
+            </div>
+
+            {isLoadingPayouts && payouts.length === 0 ? (
+              <div style={{ textAlign: "center", padding: 60, color: "#71717A" }}>Memuat data...</div>
+            ) : payouts.length === 0 ? (
+              <div style={{ textAlign: "center", padding: 60, color: "#71717A", background: "#1C1C24", borderRadius: 16 }}>Belum ada permintaan pencairan.</div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                {payouts.map((payout) => {
+                  const statusColor = payout.status === "PAID" ? "#10B981" : payout.status === "REJECTED" ? "#EF4444" : "#F59E0B";
+                  const statusLabel = payout.status === "PAID" ? "Lunas" : payout.status === "REJECTED" ? "Ditolak" : "Pending";
+                  return (
+                    <div key={payout.id} style={{ background: "#18181B", border: `1px solid ${statusColor}44`, borderRadius: 16, padding: 24, position: "relative", overflow: "hidden" }}>
+                      <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: statusColor }} />
+
+                      {/* Header */}
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
+                        <div>
+                          <span style={{ fontWeight: 800, fontSize: 16, color: "#fff" }}>{payout.user?.name || "Unknown"}</span>
+                          <span style={{ marginLeft: 10, fontSize: 12, color: "#71717A", background: "#27272A", padding: "2px 8px", borderRadius: 100 }}>{payout.user?.email}</span>
+                        </div>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: statusColor, background: `${statusColor}22`, padding: "4px 10px", borderRadius: 20, border: `1px solid ${statusColor}44` }}>
+                          {statusLabel}
+                        </span>
+                      </div>
+
+                      {/* Bank Info */}
+                      <div style={{ background: "#1C1C24", borderRadius: 12, padding: "14px 16px", marginBottom: 16, display: "flex", flexWrap: "wrap", gap: 20 }}>
+                        <div>
+                          <div style={{ fontSize: 10, color: "#71717A", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>Jumlah</div>
+                          <div style={{ fontSize: 20, fontWeight: 900, color: "#F59E0B" }}>Rp {payout.amount.toLocaleString("id-ID")}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: 10, color: "#71717A", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>Bank / E-Wallet</div>
+                          <div style={{ fontSize: 14, fontWeight: 700, color: "#F4F4F5" }}>{payout.bankName}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: 10, color: "#71717A", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>No. Rekening</div>
+                          <div style={{ fontSize: 14, fontWeight: 700, color: "#F4F4F5", fontFamily: "monospace", letterSpacing: "0.06em" }}>{payout.accountNumber}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: 10, color: "#71717A", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>Atas Nama</div>
+                          <div style={{ fontSize: 14, fontWeight: 700, color: "#F4F4F5" }}>{payout.accountName}</div>
+                        </div>
+                      </div>
+
+                      {/* Admin Note + Actions (only for PENDING) */}
+                      {payout.status === "PENDING" && (
+                        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                            <MessageSquare size={13} color="#71717A" />
+                            <input
+                              type="text"
+                              placeholder="Catatan admin (opsional, misal: BCA reff 12345)"
+                              value={adminNoteMap[payout.id] || ""}
+                              onChange={e => setAdminNoteMap(prev => ({ ...prev, [payout.id]: e.target.value }))}
+                              style={{ ...inputStyle, flex: 1, padding: "8px 12px", fontSize: 12 }}
+                            />
+                          </div>
+                          <div style={{ display: "flex", gap: 10 }}>
+                            <button
+                              onClick={() => handleProcessPayout(payout.id, "PAID")}
+                              disabled={processingId === payout.id}
+                              style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "10px", borderRadius: 10, border: "none", background: "#10B981", color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer" }}
+                            >
+                              {processingId === payout.id ? <RefreshCw size={13} style={{ animation: "spin 1s linear infinite" }} /> : <Check size={13} />}
+                              Tandai Lunas
+                            </button>
+                            <button
+                              onClick={() => handleProcessPayout(payout.id, "REJECTED")}
+                              disabled={processingId === payout.id}
+                              style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "10px", borderRadius: 10, border: "none", background: "#EF4444", color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer" }}
+                            >
+                              <X size={13} /> Tolak
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {payout.status !== "PENDING" && payout.adminNote && (
+                        <div style={{ fontSize: 12, color: "#71717A", background: "#1C1C24", padding: "10px 14px", borderRadius: 10 }}>
+                          Catatan: {payout.adminNote}
+                        </div>
+                      )}
+
+                      <div style={{ fontSize: 11, color: "#3F3F46", marginTop: 12 }}>
+                        Diajukan: {new Date(payout.createdAt).toLocaleString("id-ID")}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         )}
 
         <button onClick={() => { setIsLoggedIn(false); setAdminSecret(""); }} style={{ ...btnStyle("ghost"), marginTop: 24 }}>Logout</button>

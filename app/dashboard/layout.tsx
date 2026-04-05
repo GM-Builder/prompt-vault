@@ -231,8 +231,8 @@ function SidebarContent({
         borderTop: "1px solid #EBEBEB",
         display: "flex", flexDirection: "column", gap: 1,
       }}>
-        <NavItem icon={<Settings style={{ width: 13, height: 13 }} />} label="Settings" isActive={false} onClick={() => { }} />
-        <NavItem icon={<HelpCircle style={{ width: 13, height: 13 }} />} label="Help Center" isActive={false} onClick={() => { }} />
+        <NavItem icon={<Settings style={{ width: 13, height: 13 }} />} label="Settings" isActive={activeCategory === "Settings"} onClick={() => { setActiveCategory("Settings"); setSidebarOpen(false); }} />
+        <NavItem icon={<HelpCircle style={{ width: 13, height: 13 }} />} label="Help Center" isActive={false} onClick={() => { window.open("mailto:support@veloprome.com", "_blank"); }} />
 
         <div style={{
           display: "flex", alignItems: "center", gap: 9,
