@@ -747,6 +747,26 @@ export const LeaderboardView = () => {
     const userRank = data?.userRank || 0;
     const userStats = data?.userStats;
 
+    // Empty state: campaign just launched, no real participants yet
+    if (data.top100.length === 0) {
+        return (
+            <div style={{ textAlign: "center", padding: "80px 40px", background: "linear-gradient(135deg, #F0FDF4, #ECFDF5)", borderRadius: 32, border: "1px solid #BBF7D0" }}>
+                <div style={{ fontSize: 60, marginBottom: 20 }}>🏆</div>
+                <h3 style={{ fontSize: 24, fontWeight: 900, color: "#065F46", marginBottom: 12, letterSpacing: "-0.03em" }}>
+                    Jadilah yang Pertama!
+                </h3>
+                <p style={{ color: "#047857", fontSize: 15, fontWeight: 500, maxWidth: 420, margin: "0 auto 24px", lineHeight: 1.6 }}>
+                    Campaign baru saja dimulai dan belum ada peserta yang terdaftar. Daftarkan video Anda sekarang dan rebut posisi #1 di leaderboard!
+                </p>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 24px", background: "#10B981", color: "#fff", borderRadius: 100, fontWeight: 800, fontSize: 14 }}>
+                    ✨ Mulai Tantangan Sekarang
+                </div>
+            </div>
+        );
+    }
+
+
+
     return (
         <div style={{ maxWidth: 1000, margin: "0 auto", paddingBottom: 100 }}>
             {/* Prize & Status Header */}

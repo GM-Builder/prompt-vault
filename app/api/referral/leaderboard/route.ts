@@ -30,31 +30,6 @@ export async function GET() {
         return refPoints + viralPoints;
     };
 
-    // 3. Define Extensive High-Fidelity Dummy Data
-    // This ensures the leaderboard looks "alive" even before real data accumulates
-    const dummyCandidates = [
-       { name: "Budi Setiawan", refs: 82, views: 145000 },
-       { name: "Siti Aminah", refs: 74, views: 210000 },
-       { name: "Andi Wijaya", refs: 68, views: 95000 },
-       { name: "Dewi Lestari", refs: 52, views: 12000 },
-       { name: "Fajar Pratama", refs: 48, views: 8000 },
-       { name: "Rina Kusuma", refs: 41, views: 32000 },
-       { name: "Eko Prasetyo", refs: 36, views: 15000 },
-       { name: "Maya Saputri", refs: 29, views: 42000 },
-       { name: "Hendra Gunawan", refs: 24, views: 11000 },
-       { name: "Lia Natalis", refs: 21, views: 6000 },
-       { name: "Robby Alamsyah", refs: 19, views: 3000 },
-       { name: "Nina Marlina", refs: 17, views: 25000 },
-       { name: "Deni Sumargo", refs: 15, views: 92000 },
-       { name: "Gading Marten", refs: 12, views: 54000 },
-       { name: "Raffi Ahmad", refs: 9, views: 88000 },
-       { name: "Nagita Slavina", refs: 7, views: 44000 },
-       { name: "Baim Wong", refs: 5, views: 21000 },
-       { name: "Paula Verhoeven", refs: 4, views: 11000 },
-       { name: "Atta Halilintar", refs: 3, views: 150000 },
-       { name: "Aurelie Hermansyah", refs: 2, views: 32000 },
-    ];
-
     let realUsers: any[] = [];
     let userReferralCount = 0;
     let userMaxViews = 0;
@@ -113,22 +88,8 @@ export async function GET() {
         if (me) userReferralCount = me.referrals;
     }
 
-    // 4. Merge & Rank
-    const allCandidates = [
-        ...realUsers,
-        ...dummyCandidates.map((d, i) => ({
-            id: `dummy-${i}`,
-            name: d.name,
-            referrals: d.refs,
-            views: d.views,
-            points: calculatePoints(d.refs, d.views),
-            isMe: false
-        }))
-    ]
-    .filter((u, index, self) => 
-        // Remove duplicates if real user has same name as dummy (for internal testing)
-        index === self.findIndex((t) => t.id === u.id)
-    )
+    // 4. Rank real users only
+    const allCandidates = realUsers
     .sort((a, b) => b.points - a.points);
 
     const formattedTop100 = allCandidates.slice(0, 100).map((u, i) => ({
@@ -148,7 +109,8 @@ export async function GET() {
           referrals: userReferralCount,
           views: userMaxViews,
           rank: myRank
-      }
+      },
+      totalParticipants: allCandidates.length
     });
 
   } catch (error) {
